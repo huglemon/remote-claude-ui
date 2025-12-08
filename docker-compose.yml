@@ -1,0 +1,33 @@
+version: "3"
+
+services:
+  ccui:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    # 不映射宿主机端口，交给 Traefik 反代
+    ports:
+      - 3001
+    networks:
+      - dokploy-network
+    volumes:
+      # 保存 Claude Code 的项目、会话等
+      - ccui-claude:/root/.claude
+      # 保存你在容器里 clone 的代码仓库
+      - ccui-workspace:/workspace
+    environment:
+      # 可以按需在 Dokploy 的 Env 界面覆盖
+      - PORT=3001
+    labels:
+      - "traefik.enable=true"
+      # 换成你自己的域名
+      - "traefik.http.routers.ccui.rule=Host(`cc.huglemon.com`)"
+
+networks:
+  dokploy-network:
+    external: true
+
+volumes:
+  ccui-claude:
+  ccui-workspace:
