@@ -14,19 +14,12 @@ RUN npm install -g @anthropic-ai/claude-code
 # 参考：npm install -g cc-model-switcher :contentReference[oaicite:1]{index=1}
 RUN npm install -g cc-model-switcher
 
-# 安装 Claude Code UI（提供 Web 界面）
-# 参考：npm install -g @siteboon/claude-code-ui :contentReference[oaicite:2]{index=2}
-RUN npm install -g @siteboon/claude-code-ui
+# 安装 happy-coder (Remote Coding)
+# 参考：https://happy.engineering/docs/quick-start/
+RUN npm install -g happy-coder
 
 # 准备 Claude Code & 项目目录
 ENV CLAUDE_HOME=/root/.claude
 RUN mkdir -p $CLAUDE_HOME/projects /workspace
 
 WORKDIR /workspace
-
-# 默认端口 3001，也可以在 Dokploy 里改 PORT 环境变量
-ENV PORT=3001
-EXPOSE 3001
-
-# 默认就启动 Claude Code UI
-CMD ["claude-code-ui"]
